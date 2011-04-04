@@ -9,6 +9,13 @@ xref:
 eunit:
 	@./rebar eunit skip_deps=true
 
+clean:
+	@./rebar clean skip_deps=true
+
+distclean:
+	@./rebar delete-deps
+	@./rebar clean
+
 qc:
 	@./rebar qc skip_deps=true
 
