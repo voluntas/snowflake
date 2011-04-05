@@ -12,6 +12,9 @@ eunit:
 clean:
 	@./rebar clean skip_deps=true
 
+doc:
+	@./rebar doc skip_deps=true
+
 distclean:
 	@./rebar delete-deps
 	@./rebar clean

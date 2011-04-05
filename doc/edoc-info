@@ -1,0 +1,3 @@
+{application,snowflake}.
+{packages,[]}.
+{modules,[snowflake,snowflake_app,snowflake_sup]}.
