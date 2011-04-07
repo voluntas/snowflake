@@ -4,8 +4,8 @@
 
 -export([initial_state/0,
          command/1,
-         next_state/3,
          precondition/2,
+         next_state/3,
          postcondition/3]).
 
 initial_state() ->
@@ -22,15 +22,15 @@ precondition(S, {call, _, press, _}) ->
 precondition(S, {call, _, release, _}) ->
   S == on.
 
-postcondition(_, {call, _, press, _}, R) ->
-  R == on;
-postcondition(_, {call, _, release, _}, R) ->
-  R == off.
-
 next_state(_, _, {call, _, press, _}) -> 
   on;
 next_state(_, _, {call, _, release, _}) ->
   off.
+
+postcondition(_, {call, _, press, _}, R) ->
+  R == on;
+postcondition(_, {call, _, release, _}, R) ->
+  R == off.
 
 prop_snowflake() ->
   ?FORALL(Cmds,
