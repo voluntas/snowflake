@@ -1,9 +1,12 @@
 -module(snowflake).
 
--export([my_func/0]).
+-export([press/0, release/0]).
 
-my_func() ->
-  ok.
+press() ->
+  on.
+
+release() ->
+  off.
 
 -ifdef(TEST).
 -endif.
