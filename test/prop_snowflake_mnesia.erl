@@ -38,9 +38,18 @@ command(#state{users = Users}) ->
     [
       {call, snowflake_mnesia, lookup_user, [binary(20)]},
       {call, snowflake_mnesia, add_user, [binary(20), binary(20), binary(20)]},
-      {call, snowflake_mnesia, delete_user, [binary(20)]},
-      {call, snowflake_mnesia, delete_user, [?LET(User, elements(Users), User#user.id)]}
-    ]
+      {call, snowflake_mnesia, delete_user, [binary(20)]}
+    ] 
+    ++
+    case Users of
+      [] ->
+        [];
+      _ ->
+        [
+          {call, snowflake_mnesia, delete_user, [?LET(User, elements(Users), User#user.id)]},
+          {call, snowflake_mnesia, lookup_user, [?LET(User, elements(Users), User#user.id)]}
+        ]
+    end
   ).
 
 %% Call -> {call, Module, Function, Args}
