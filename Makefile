@@ -17,6 +17,7 @@ distclean:
 	@./rebar clean
 
 qc:
+	@./rebar compile skip_deps=true
 	@./rebar qc skip_deps=true
 
 build:
