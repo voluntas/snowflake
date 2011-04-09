@@ -22,7 +22,7 @@ precondition(S, {call, _, press, _}) ->
 precondition(S, {call, _, release, _}) ->
   S == on.
 
-next_state(_, _, {call, _, press, _}) -> 
+next_state(_, _, {call, _, press, _}) ->
   on;
 next_state(_, _, {call, _, release, _}) ->
   off.
