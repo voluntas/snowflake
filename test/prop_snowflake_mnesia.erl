@@ -47,7 +47,10 @@ command(#state{users = Users}) ->
       _ ->
         [
           {call, snowflake_mnesia, delete_user, [?LET(User, elements(Users), User#user.id)]},
-          {call, snowflake_mnesia, lookup_user, [?LET(User, elements(Users), User#user.id)]}
+          {call, snowflake_mnesia, lookup_user, [?LET(User, elements(Users), User#user.id)]},
+          {call, snowflake_mnesia, add_user, [?LET(User, elements(Users), User#user.id),
+                                              ?LET(User, elements(Users), User#user.password),
+                                              ?LET(User, elements(Users), User#user.groups)]}
         ]
     end
   ).
