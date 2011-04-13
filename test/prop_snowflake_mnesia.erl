@@ -26,7 +26,7 @@ prop_snowflake() ->
             application:stop(mnesia),
             ?WHENFAIL(io:format("History: ~p\nState: ~p\nRes: ~p\n",
                                 [History, State, Result]),
-                      Result =:= ok)
+                      aggregate(command_names(Cmds), Result =:= ok))
           end
   ).
 
