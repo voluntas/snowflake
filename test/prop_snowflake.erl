@@ -1,5 +1,9 @@
 -module(prop_snowflake).
 
+-author('@voluntas').
+
+-behaviour('proper_statem').
+
 -include_lib("proper/include/proper.hrl").
 
 -export([initial_state/0,

@@ -2,6 +2,8 @@
 
 -author('@voluntas').
 
+-behaviour('proper_statem').
+
 -export([initial_state/0,
          command/1,
          precondition/2,
@@ -15,20 +17,31 @@
 
 -record(state, {users = [] :: [#user{}]}).
 
+%% prop_snowflake_mnesia_paralell() ->
+%%     ?FORALL(ParCmds, paralell_commands(?MODULE, initial_state()),
+%%         begin
+%%           error_logger:tty(false),
+%%           application:start(mnesia),
+%%           snowflake_mnesia:init(),
+%%           {History, State, Result} = run_parallel_commands(?MODULE, ParCmds),
+%%           application:stop(mnesia),
+%%           ?WHENFAIL(io:format("History: ~p\nState: ~p\nRes: ~p\n",
+%%                               [History, State, Result]),
+%%                     aggregate(command_names(ParCmds), Result =:= ok))
+%%         end).
+
 prop_snowflake() ->
-  ?FORALL(Cmds,
-          commands(?MODULE, initial_state()),
-          begin
-            error_logger:tty(false),
-            application:start(mnesia),
-            snowflake_mnesia:init(),
-            {History, State, Result} = run_commands(?MODULE, Cmds),
-            application:stop(mnesia),
-            ?WHENFAIL(io:format("History: ~p\nState: ~p\nRes: ~p\n",
-                                [History, State, Result]),
-                      aggregate(command_names(Cmds), Result =:= ok))
-          end
-  ).
+  ?FORALL(Cmds, commands(?MODULE, initial_state()),
+    begin
+      error_logger:tty(false),
+      application:start(mnesia),
+      snowflake_mnesia:init(),
+      {History, State, Result} = run_commands(?MODULE, Cmds),
+      application:stop(mnesia),
+      ?WHENFAIL(io:format("History: ~p\nState: ~p\nRes: ~p\n",
+                          [History, State, Result]),
+                aggregate(command_names(Cmds), Result =:= ok))
+    end).
 
 initial_state() ->
   #state{}.
