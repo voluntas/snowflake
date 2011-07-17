@@ -19,21 +19,20 @@ init() ->
 
 add_user(Id, Password, Group) ->
   F = fun() ->
-        case mnesia:read(?USER_TABLE, Id, read) of
+        case mnesia:read(?USER_TABLE, Id) of
           [] ->
-            User = #user{id = Id, password = Password, groups = [Group]},
-            mnesia:write(?USER_TABLE, User, sticky_write),
-            {ok, User};
+            User = #user{id = Id, password = Password, group = Group},
+            mnesia:write(?USER_TABLE, User, sticky_write);
           [_User] ->
             {error, already_user_exist}
         end
       end,
-  mnesia:activity(transaction, F).
+  mnesia:activity(async_dirty, F).
 
 lookup_user(Id) ->
-  case mnesia:activity(transaction,
-                       fun mnesia:read/3,
-                       [?USER_TABLE, Id, read]) of
+  case mnesia:activity(async_dirty,
+                       fun mnesia:read/2,
+                       [?USER_TABLE, Id]) of
     [] ->
       {error, user_not_found};
     [User] ->
@@ -42,15 +41,14 @@ lookup_user(Id) ->
 
 delete_user(Id) ->
   F = fun() ->
-        case mnesia:read(?USER_TABLE, Id, read) of
+        case mnesia:read(?USER_TABLE, Id) of
           [] ->
             {error, user_not_found};
-          [User] ->
-            mnesia:delete(?USER_TABLE, Id, sticky_write),
-            {ok, User}
+          [_User] ->
+            mnesia:delete(?USER_TABLE, Id, sticky_write)
         end
       end,
-  mnesia:activity(transaction, F).
+  mnesia:activity(async_dirty, F).
 
 -ifdef(TEST).
 -endif.
