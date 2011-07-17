@@ -1,4 +1,9 @@
-all: compile xref eunit
+all:
+	@./rebar update-deps
+	@./rebar get-deps
+	@./rebar compile
+	@./rebar xref
+	@./rebar eunit
 
 compile:
 	@./rebar compile skip_deps=true
@@ -18,9 +23,3 @@ distclean:
 
 qc:
 	@./rebar qc skip_deps=true
-
-build:
-	@./rebar get-deps
-	@./rebar update-deps
-	@./rebar compile
-	@./rebar xref
