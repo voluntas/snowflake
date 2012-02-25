@@ -5,7 +5,7 @@
 -export([start/2, stop/1]).
 
 start(_StartType, _StartArgs) ->
-    lager:error("あいうえお", []),
+    lager:error("spam!spam!spam!", []),
     lager:info("abcdefg", []),
     snowflake_sup:start_link().
 
