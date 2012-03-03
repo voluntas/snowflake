@@ -2,9 +2,11 @@
 
 -behaviour(gen_server).
 
+-include_lib("eunit/include/eunit.hrl").
+
 -define(SERVER, ?MODULE).
 
--define(DEFAULT_PUB, "tcp://127.0.0.1:5000").
+-define(DEFAULT_PUB, "tcp://127.0.0.1:5555").
 
 -record(state, {zmq_context :: any(),
                 zmq_socket :: any()}).
@@ -27,7 +29,7 @@
 %% ------------------------------------------------------------------
 
 start_link() ->
-  gen_server:start_link({local, ?SERVER}, ?MODULE, [], []).
+  gen_server:start_link(?MODULE, [], []).
 
 %% ------------------------------------------------------------------
 %% gen_server Function Definitions
@@ -36,6 +38,8 @@ start_link() ->
 init(_Args) ->
   {ok, Context} = erlzmq:context(),
   {ok, Socket} = erlzmq:socket(Context, [sub, {active, true}]),
+  %% ok = erlzmq:setsockopt(Socket, identity,  pid_to_list(self())),
+  ok = erlzmq:setsockopt(Socket, subscribe, <<>>),
   ok = erlzmq:connect(Socket, ?DEFAULT_PUB),
   {ok, #state{zmq_context = Context, zmq_socket = Socket}}.
 
@@ -45,10 +49,9 @@ handle_call(_Request, _From, State) ->
 handle_cast(_Msg, State) ->
   {noreply, State}.
 
-handle_info({zmq, _S, [pollin]}, State) ->
-  {ok, Msg} = erlzmq:recv(State#state.zmq_socket),
+handle_info({zmq, _S, Msg, []}, State) ->
   Data = jiffy:decode(Msg),
-  io:format("~p: ~p", [self(), Data]),
+  ?debugVal(Data),
   {noreply, State};
 handle_info(_Info, State) ->
   {noreply, State}.
