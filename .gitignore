@@ -2,3 +2,4 @@ deps/*
 ebin/*
 .qc/*
 .eunit/*
+*.pyc
