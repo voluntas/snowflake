@@ -4,7 +4,7 @@
 -export([jiffy/1]).
 -export([mochijson2/1]).
 
--define(TIME, 1).
+-define(TIME, 100).
 
 main() ->
   {ok, Binary} = file:read_file("tokoroten.json"),
