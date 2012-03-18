@@ -2,8 +2,8 @@ all:
 	@./rebar update-deps
 	@./rebar get-deps
 	@./rebar compile
-	@./rebar xref
-	@./rebar eunit
+	@./rebar xref skip_deps=true
+	@./rebar eunit skip_deps=true
 
 compile:
 	@./rebar compile skip_deps=true
