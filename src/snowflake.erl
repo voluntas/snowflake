@@ -1,6 +1,7 @@
 -module(snowflake).
 
--callback start() -> ok.
+-export([start/0]).
 
--ifdef(TEST).
--endif.
+start() ->
+    application:start(snowflake).
+

@@ -10,6 +10,7 @@
 %% ===================================================================
 
 start(_StartType, _StartArgs) ->
+    ok = snowflake_cowboy:start(),
     snowflake_sup:start_link().
 
 stop(_State) ->

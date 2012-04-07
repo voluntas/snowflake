@@ -16,6 +16,7 @@ eunit:
 
 clean:
 	@./rebar clean skip_deps=true
+	rm erl_crash.dump
 
 distclean:
 	@./rebar delete-deps
