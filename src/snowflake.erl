@@ -1,9 +1,6 @@
 -module(snowflake).
 
--export([my_func/0]).
-
-my_func() ->
-  ok.
+-callback start() -> ok.
 
 -ifdef(TEST).
 -endif.
