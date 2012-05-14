@@ -24,3 +24,8 @@ distclean:
 
 qc:
 	@./rebar qc skip_deps=true
+
+release:
+	rm -rf rel/snowflake/
+	@./rebar compile
+	(cd rel && ../rebar generate)
