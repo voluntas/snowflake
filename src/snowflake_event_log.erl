@@ -10,7 +10,7 @@
                 filename :: file:filename()}).
 
 init([Filename, SessionId]) ->
-    {ok, Fd} = file:open(Filename, [append, raw, binary]),
+    {ok, Fd} = file:open(Filename, [append, binary]),
     {ok, #state{fd = Fd, session_id = SessionId, filename = Filename}}.
 
 handle_event([_Format, _Args], #state{fd = Fd} = State) ->

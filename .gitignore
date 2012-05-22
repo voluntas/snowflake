@@ -3,3 +3,4 @@ ebin/*
 .qc/*
 .eunit/*
 rel/snowflake/*
+erl_crash.dump

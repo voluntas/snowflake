@@ -1,18 +1,25 @@
 -module(snowflake).
 
--export([main/0]).
+-export([start/0]).
 
-main() ->
-    ok = snowflake_logger:init(),
-    F = fun() ->
-            ok = snowflake_logger:start(<<"abcdefg">>),
+start() ->
+    ok = application:start(snowflake),
+    F1 = fun() ->
+            ok = snowflake_logger:start(<<"log/abcdefg">>),
             timer:sleep(1000),
             ok = snowflake_logger:notify("~w | ~w ~n", [<<"abc">>, <<"def">>]),
             timer:sleep(1000),
             ok = snowflake_logger:stop()
         end,
-    spawn(F),
-    spawn(F),
+    F2 = fun() ->
+            ok = snowflake_logger:start(<<"log/egfdija">>),
+            timer:sleep(1000),
+            ok = snowflake_logger:notify("~w | ~w ~n", [<<"abc">>, <<"def">>]),
+            timer:sleep(1000),
+            ok = snowflake_logger:stop()
+        end,
+    spawn(F1),
+    spawn(F2),
     ok.
 
 

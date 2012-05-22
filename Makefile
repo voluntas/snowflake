@@ -11,6 +11,9 @@ compile:
 xref:
 	@./rebar xref skip_deps=true
 
+run: compile xref
+	./start.sh
+
 eunit:
 	@./rebar eunit skip_deps=true
 
