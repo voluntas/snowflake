@@ -11,6 +11,8 @@
          terminate/2,
          code_change/3]).
 
+-include_lib("eunit/include/eunit.hrl").
+
 -record(state, {pid :: pid()}).
 
 start_link(Args) ->
