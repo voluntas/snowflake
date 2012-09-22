@@ -4,14 +4,12 @@
 
 -spec start() -> ok.
 start() ->
+    application:start(ranch),
     application:start(cowboy),
     Dispatch = [
         {'_', [
             {'_', snowflake_default_handler, []}
         ]}
     ],
-    cowboy:start_listener(snowflake_http_handler, 100,
-        cowboy_tcp_transport, [{port, 8080}],
-        cowboy_http_protocol,  [{dispatch, Dispatch}]
-    ),
+    cowboy:start_http(snowflake_http_handler, 100, [{port, 8080}], [{dispatch, Dispatch}]),
     ok.
