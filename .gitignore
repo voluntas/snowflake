@@ -3,3 +3,4 @@ ebin/*
 .qc/*
 .eunit/*
 rel/snowflake/*
+dev/*
