@@ -4,3 +4,4 @@ ebin/*
 .eunit/*
 rel/snowflake/*
 dev/*
+*.plt
