@@ -44,12 +44,21 @@ distclean: clean
 	@./rebar -C $(REBAR_CONFIG) delete-deps
 	rm -rf dev
 
-dialyze-build-plt:
-	dialyzer --build_plt --apps erts kernel stdlib mnesia crypto public_key snmp reltool
+dialyze-build-otp-plt:
+	dialyzer --build_plt --output_plt ~/.dialyzer.plt \
+	    --apps erts kernel stdlib sasl inets mnesia crypto \
+	           public_key snmp reltool ssl
 
-dialyze-add-to-plt:
-	dialyzer --add_to_plt --plt ~/.dialyzer_plt --output_plt $(APP_NAME).plt -c .
+dialyze-build-deps-plt:
+	dialyzer --build_plt --output_plt .$(APP_NAME)_deps.plt --apps deps/*
 
-dialyze: compile
-	dialyzer --check_plt --plt $(APP_NAME).plt -c .
-	dialyzer -n -q -c ebin -Wunmatched_returns -Werror_handling -Wrace_conditions -Wunderspecs -Woverspecs
+dialyze-with-deps:
+	dialyzer --check_plt --plt .$(APP_NAME)_deps.plt -c .
+	dialyzer --plts ~/.dialyzer.plt .$(APP_NAME)_deps.plt --src src --no_native \
+	    -Wunmatched_returns -Werror_handling -Wrace_conditions \
+	    -Wunderspecs -Woverspecs
+
+dialyze:
+	dialyzer --plts ~/.dialyzer.plt --src src --no_native \
+	    -Wunmatched_returns -Werror_handling -Wrace_conditions \
+	    -Wunderspecs -Woverspecs
