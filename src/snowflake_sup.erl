@@ -1,4 +1,3 @@
-
 -module(snowflake_sup).
 
 -behaviour(supervisor).
@@ -24,5 +23,12 @@ start_link() ->
 %% ===================================================================
 
 init([]) ->
-    {ok, { {one_for_one, 5, 10}, []} }.
+
+    IP = {0,0,0,0},
+    Port = 8080,
+    LogDir = "priv/log",
+
+    ChildSpec = snowflake_wm:child_spec(IP, Port, LogDir),
+    {ok, { {one_for_one, 5, 10}, [ChildSpec]} }.
+
 
