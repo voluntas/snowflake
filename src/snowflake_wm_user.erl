@@ -4,11 +4,12 @@
          service_available/2,
          allowed_methods/2,
          resource_exists/2,
-         create_path/2,
          content_types_accepted/2,
          content_types_provided/2]).
 
 -export([to_json/2, from_json/2]).
+
+%% wmtrace_resource:add_dispatch_rule("wmtrace", "/tmp").
 
 -include_lib("webmachine/include/webmachine.hrl").
 
@@ -30,9 +31,6 @@ service_available(RD, Ctx) ->
 
 allowed_methods(RD, Ctx) ->
     {['GET', 'PUT'], RD, Ctx}.
-
-create_path(RD, Ctx) ->
-    {Ctx#ctx.user_id, RD, Ctx}.
 
 resource_exists(RD, Ctx) ->
     UserId = wrq:path_info(user_id, RD),
@@ -60,5 +58,6 @@ from_json(RD, Ctx) ->
     Password = proplists:get_value(<<"password">>, Json),
     NewJson = mochijson2:encode({struct, [{<<"user_id">>, list_to_binary(Ctx#ctx.user_id)},
                                           {<<"password">>, Password}]}),
-    RD2 = wrq:set_resp_body(NewJson, RD),
-    {true, RD2, Ctx}.
+    RD2 = wrq:set_resp_header("Location", "/users/" ++ Ctx#ctx.user_id, RD),
+    RD3 = wrq:set_resp_body(NewJson, RD2),
+    {true, RD3, Ctx}.
