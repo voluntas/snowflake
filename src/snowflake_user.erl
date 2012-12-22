@@ -1,7 +1,7 @@
 -module(snowflake_user).
 
 -export([new/0]).
--export([add/2, update/2, delete/1, lookup/1, key_list/0]).
+-export([assign/2, delete/1, lookup/1, key_list/0]).
 
 -export_type([user_id/0, password/0]).
 
@@ -17,25 +17,10 @@ new() ->
     _Tid = ets:new(?USER_TABLE, [named_table, {keypos, #user.id}, public, set]),
     ok.
 
--spec add(user_id(), password()) -> ok | {error, duplicate_user_id}.
-add(UserId, Password) ->
-    case ets:insert_new(?USER_TABLE, #user{id = UserId, password = Password}) of
-        true ->
-            ok;
-        false ->
-            {error, duplicate_id}
-    end.
-
--spec update(binary(), binary()) -> ok | {error, missing_user_id}.
-update(UserId, Password) ->
-    case lookup(UserId) of
-        not_found ->
-            {error, missing_user_id};
-        User ->
-            true = ets:insert(?USER_TABLE, User#user{password = Password}),
-            ok
-    end.
-
+-spec assign(user_id(), password()) -> ok.
+assign(UserId, Password) ->
+    true = ets:insert(?USER_TABLE, #user{id = UserId, password = Password}),
+    ok.
 
 -spec delete(user_id()) -> ok | {error, missing_user_id}.
 delete(UserId) ->
