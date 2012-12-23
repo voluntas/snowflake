@@ -22,15 +22,10 @@ assign(UserId, Password) ->
     true = ets:insert(?USER_TABLE, #user{id = UserId, password = Password}),
     ok.
 
--spec delete(user_id()) -> ok | {error, missing_user_id}.
+-spec delete(user_id()) -> ok.
 delete(UserId) ->
-    case lookup(UserId) of
-        not_found ->
-            {error, missing_user_id};
-        _User ->
-            true = ets:delete(UserId),
-            ok
-    end.
+    true = ets:delete(?USER_TABLE, UserId),
+    ok.
 
 -spec lookup(user_id()) -> not_found | #user{}.
 lookup(UserId) ->

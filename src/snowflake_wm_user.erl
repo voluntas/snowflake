@@ -4,6 +4,7 @@
          service_available/2,
          allowed_methods/2,
          resource_exists/2,
+         delete_resource/2,
          content_types_accepted/2,
          content_types_provided/2]).
 
@@ -30,7 +31,7 @@ service_available(RD, Ctx) ->
     {true, RD, Ctx#ctx{method = wrq:method(RD)}}.
 
 allowed_methods(RD, Ctx) ->
-    {['GET', 'PUT'], RD, Ctx}.
+    {['GET', 'PUT', 'DELETE'], RD, Ctx}.
 
 resource_exists(RD, Ctx) ->
     UserId = wrq:path_info(user_id, RD),
@@ -46,6 +47,11 @@ content_types_accepted(RD, Ctx) ->
 
 content_types_provided(RD, Ctx) ->
     {[{"application/json", to_json}], RD, Ctx}.
+
+delete_resource(RD, #ctx{user = User} = Ctx) ->
+    ok = snowflake_user:delete(User#user.id),
+    {true, RD, Ctx}. 
+
 
 to_json(RD, #ctx{user = User} = Ctx) ->
     Result = mochijson2:encode({struct, [{<<"user_id">>, User#user.id},
