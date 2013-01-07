@@ -28,10 +28,10 @@ init(_Config) ->
     {{trace, "/tmp"}, #ctx{}}.
 
 service_available(RD, Ctx) ->
-    {true, RD, Ctx#ctx{method = wrq:method(RD)}}.
+    {true, RD, Ctx}.
 
 allowed_methods(RD, Ctx) ->
-    {['GET', 'PUT', 'DELETE'], RD, Ctx}.
+    {['HEAD', 'GET', 'PUT', 'DELETE'], RD, Ctx}.
 
 resource_exists(RD, Ctx) ->
     UserId = wrq:path_info(user_id, RD),
