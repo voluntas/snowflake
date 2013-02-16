@@ -52,3 +52,8 @@ dialyze-init:
 dialyze: compile
 	dialyzer --check_plt --plt $(APP_NAME).plt -c .
 	dialyzer -c ebin
+
+watch:
+	watchmedo shell-command --patterns="*.erl;*.hrl" \
+                  --recursive --wait --command="make compile" \
+                  src include test
