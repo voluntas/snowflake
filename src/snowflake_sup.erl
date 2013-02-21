@@ -30,5 +30,3 @@ init([]) ->
 
     ChildSpec = snowflake_wm:child_spec(IP, Port, LogDir),
     {ok, { {one_for_one, 5, 10}, [ChildSpec]} }.
-
-
