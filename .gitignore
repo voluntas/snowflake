@@ -3,3 +3,7 @@ ebin/*
 .qc/*
 .eunit/*
 *.pyc
+.test/*
+rel/snowflake/*
+dev/*
+*.plt
