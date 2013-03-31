@@ -5,21 +5,35 @@
 -export([mochijson2/1]).
 -export([ejson/1]).
 -export([jsx/1]).
+-export([jsonx/1]).
 
 -define(TIME, 100).
 
 main() ->
   {ok, Binary} = file:read_file("tokoroten.json"),
-  {JiffyTime, _Value} = timer:tc(?MODULE, jiffy, [Binary]),
-  {Ejson, _Value} = timer:tc(?MODULE, ejson, [Binary]),
-  {Mochijson2Time, _Value} = timer:tc(?MODULE, mochijson2, [Binary]),
-  {JsxTime, _Value} = timer:tc(?MODULE, jsx, [Binary]),
 
+  {JiffyTime, _Value} = timer:tc(?MODULE, jiffy, [Binary]),
   io:format("jiffy      .. Time: ~w~n", [JiffyTime]),
-  io:format("ejson      .. Time: ~w~n", [Ejson]),
+
+  {EjsonTime, _Value} = timer:tc(?MODULE, ejson, [Binary]),
+  io:format("ejson      .. Time: ~w~n", [EjsonTime]),
+
+  {Mochijson2Time, _Value} = timer:tc(?MODULE, mochijson2, [Binary]),
   io:format("mochijson2 .. Time: ~w~n", [Mochijson2Time]),
+
+  {JsxTime, _Value} = timer:tc(?MODULE, jsx, [Binary]),
   io:format("jsx        .. Time: ~w~n", [JsxTime]),
+
+  {JsonxTime, _Value} = timer:tc(?MODULE, jsonx, [Binary]),
+  io:format("jsonx      .. Time: ~w~n", [JsonxTime]),
+
   ok.
+
+jsonx(Binary) ->
+  F = fun(_) ->
+        jsonx:decode(jsonx:encode(Binary))
+      end,
+  lists:foreach(F, lists:duplicate(?TIME, duplicate)).
 
 jsx(Binary) ->
   F = fun(_) ->
