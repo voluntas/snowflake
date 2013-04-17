@@ -9,6 +9,7 @@ start() ->
     application:start(cowboy),
     Dispatch = cowboy_router:compile([
         {'_', [
+            {[<<"multipart">>], snowflake_multipart_handler, []},
             {'_', snowflake_default_handler, []}
         ]}
     ]),
