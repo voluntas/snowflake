@@ -31,31 +31,31 @@ main() ->
 
 jsonx(Binary) ->
   F = fun(_) ->
-        jsonx:decode(jsonx:encode(Binary))
+        jsonx:encode(jsonx:decode(Binary))
       end,
   lists:foreach(F, lists:duplicate(?TIME, duplicate)).
 
 jsx(Binary) ->
   F = fun(_) ->
-        jsx:decode(jsx:encode(Binary))
+        jsx:encode(jsx:decode(Binary))
       end,
   lists:foreach(F, lists:duplicate(?TIME, duplicate)).
 
 ejson(Binary) ->
   F = fun(_) ->
-        ejson:decode(ejson:encode(Binary))
+        ejson:encode(ejson:decode(Binary))
       end,
   lists:foreach(F, lists:duplicate(?TIME, duplicate)).
 
 mochijson2(Binary) ->
   F = fun(_) ->
-        mochijson2:decode(mochijson2:encode(Binary))
+        mochijson2:encode(mochijson2:decode(Binary))
       end,
   lists:foreach(F, lists:duplicate(?TIME, duplicate)).
 
 jiffy(Binary) ->
   F = fun(_) ->
-        jiffy:decode(jiffy:encode(Binary))
+        jiffy:encode(jiffy:decode(Binary))
       end,
   lists:foreach(F, lists:duplicate(?TIME, duplicate)).
 
